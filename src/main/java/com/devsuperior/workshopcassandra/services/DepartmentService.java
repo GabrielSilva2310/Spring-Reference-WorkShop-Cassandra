@@ -38,6 +38,28 @@ public class DepartmentService {
 		entity=repository.save(entity);
 		return new DepartmentDTO(entity);
 	}
+	
+	public DepartmentDTO update(UUID id, DepartmentDTO dto) {
+		Department obj=getById(id);
+		copyDtoToEntity(dto, obj);
+		obj=repository.save(obj);
+		return new DepartmentDTO(obj);
+		
+	}
+	
+	public void delete(UUID id) {
+		if(!repository.existsById(id)) {
+			throw new ResourceNotFoundException("Recurso não encontrado!");
+		}
+		repository.deleteById(id);
+		
+	}
+	
+	private Department getById(UUID id) {
+		Optional<Department> result=repository.findById(id);
+		Department entity=result.orElseThrow(() ->new ResourceNotFoundException("Id não encontrado!"));
+		return entity;
+	}
 
 	private void copyDtoToEntity(DepartmentDTO dto, Department entity) {
 		entity.setName(dto.getName());
