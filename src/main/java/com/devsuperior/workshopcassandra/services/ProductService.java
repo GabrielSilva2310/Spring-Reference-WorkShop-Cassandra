@@ -38,5 +38,16 @@ public class ProductService {
 		return result.stream().map((x)-> new ProductDTO(x)).collect(Collectors.toList());
 	}
 	
+	public List<ProductDTO> findByDescription(String text){
+		List<Product> result;
+		if("".equals(text)) {
+			result=repository.findAll();
+		}
+		else {
+			result=repository.findByDescription("%"+text+"%");
+		}
+		return result.stream().map((x)-> new ProductDTO(x)).collect(Collectors.toList());
+	}
+	
 
 }
